@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <appender name="TRANSFORM_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>transform.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>transform.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- keep 30 days' worth of history capped at 3GB total size -->
+            <!--<maxHistory>30</maxHistory>-->
+            <!--<totalSizeCap>3GB</totalSizeCap>-->
+
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d [%thread] %-5level %logger{36} %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SPRING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>spring.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>spring.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- keep 10 days' worth of history capped at 3GB total size -->
+            <maxHistory>10</maxHistory>
+
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="sage.iso" level="INFO" additivity="false">
+        <appender-ref ref="TRANSFORM_FILE"/>
+    </logger>
+    <root level="INFO">
+        <appender-ref ref="SPRING_FILE" />
+    </root>
+</configuration>
