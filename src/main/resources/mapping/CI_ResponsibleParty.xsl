@@ -42,9 +42,9 @@
                 xmlns:mdq="http://standards.iso.org/iso/19157/-2/mdq/1.0"
                 xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
                 exclude-result-prefixes="#all">
-    
+
     <xsl:import href="../utility/multiLingualCharacterStrings.xsl"/>
-    
+
     <xd:doc xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" scope="stylesheet">
         <xd:desc>
             <xd:p>
@@ -68,8 +68,8 @@
                 CI_ResponsibleParties without name elements are assummed to be placeholders for CI_OnlineResources. They are transformed later in the process
                 using the CI_ResponsiblePartyToOnlineResource template
                 -->
-               <xsl:element name="cit:CI_Responsibility">
-                   <xsl:apply-templates select="./@*" mode="from19139to19115-3"/>
+                <xsl:element name="cit:CI_Responsibility">
+                    <xsl:apply-templates select="./@*" mode="from19139to19115-3"/>
                     <xsl:choose>
                         <xsl:when test="./gmd:role/gmd:CI_RoleCode">
                             <xsl:call-template name="writeCodelistElement">
@@ -152,31 +152,31 @@
     </xsl:template>
 
     <xsl:template match="gmd:contactInfo/gmd:CI_Contact/gmd:phone" mode="from19139to19115-3">
-      <xsl:for-each select="gmd:CI_Telephone/*">
-        <cit:phone>
-          <cit:CI_Telephone>
-            <cit:number>
-              <gco:CharacterString>
-                <xsl:value-of select="./gcoold:CharacterString"/>
-              </gco:CharacterString>
-            </cit:number>
-            <xsl:call-template name="writeCodelistElement">
-              <xsl:with-param name="elementName" select="'cit:numberType'"/>
-              <xsl:with-param name="codeListName" select="'cit:CI_TelephoneTypeCode'"/>
-              <xsl:with-param name="codeListValue">
-                <xsl:choose>
-                  <xsl:when test="local-name()='voice'">
-                    <xsl:value-of select="'voice'"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="'facsimile'"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:with-param>
-            </xsl:call-template>
-          </cit:CI_Telephone>
-        </cit:phone>
-      </xsl:for-each>
+        <xsl:for-each select="gmd:CI_Telephone/*">
+            <cit:phone>
+                <cit:CI_Telephone>
+                    <cit:number>
+                        <gco:CharacterString>
+                            <xsl:value-of select="./gcoold:CharacterString"/>
+                        </gco:CharacterString>
+                    </cit:number>
+                    <xsl:call-template name="writeCodelistElement">
+                        <xsl:with-param name="elementName" select="'cit:numberType'"/>
+                        <xsl:with-param name="codeListName" select="'cit:CI_TelephoneTypeCode'"/>
+                        <xsl:with-param name="codeListValue">
+                            <xsl:choose>
+                                <xsl:when test="local-name()='voice'">
+                                    <xsl:value-of select="'voice'"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:value-of select="'facsimile'"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:with-param>
+                    </xsl:call-template>
+                </cit:CI_Telephone>
+            </cit:phone>
+        </xsl:for-each>
     </xsl:template>
 
     <!-- Empty high-priority templates are used for elements that move to new locations in the output -->
