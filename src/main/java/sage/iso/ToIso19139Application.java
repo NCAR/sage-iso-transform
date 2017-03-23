@@ -1,5 +1,7 @@
 package sage.iso;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -7,18 +9,26 @@ import sage.iso.transformer.ToIso19139Transformer;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
+import java.util.UUID;
 
 public class ToIso19139Application implements CommandLineRunner {
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Value("${input}")
     private String inputFileLocation;
 
     @Value("${output}")
     private String outputFileLocation;
+
+    private UUID uuid = UUID.randomUUID();
+
+    private static String TO_ISO_19139_OLD_ISO_FROM_NEW_ISO = "toISO19139.xsl";
 
     public static void main(String[] args) throws Exception {
 
@@ -30,6 +40,8 @@ public class ToIso19139Application implements CommandLineRunner {
 
         try {
 
+            this.logStatus("STARTED");
+
             ToIso19139Transformer transformer = new ToIso19139Transformer(this.createSaxonTransformer());
 
             StreamSource sourceXml = this.createStreamSource(this.inputFileLocation);
@@ -37,16 +49,18 @@ public class ToIso19139Application implements CommandLineRunner {
 
             transformer.transform(sourceXml, resultXml);
 
+            this.logStatus("COMPLETED");
+
         } catch (Exception e) {
 
-            // TODO log exception.
+            this.logStatus("ERROR", e);
             System.exit(1);
         }
 
         System.exit(0);
     }
 
-    public Transformer createSaxonTransformer() throws Exception {
+    public Transformer createSaxonTransformer() throws TransformerConfigurationException {
 
         TransformerFactory transformerFactory = new net.sf.saxon.TransformerFactoryImpl();
 
@@ -57,7 +71,7 @@ public class ToIso19139Application implements CommandLineRunner {
 
     public Source createToIso19139Xslt() {
 
-        return new StreamSource(new File(this.getClass().getClassLoader().getResource("toISO19139.xsl").getPath()));
+        return new StreamSource(new File(this.getClass().getClassLoader().getResource(TO_ISO_19139_OLD_ISO_FROM_NEW_ISO).getPath()));
     }
 
     public StreamSource createStreamSource(String inputFileLocation) {
@@ -67,11 +81,29 @@ public class ToIso19139Application implements CommandLineRunner {
 
     public StreamResult createStreamResult(String outputFileLocation) {
 
-        return new StreamResult(createFile(outputFileLocation));
+        return new StreamResult(this.createOutputFileWithDirectories(outputFileLocation));
     }
 
     public File createFile(String location) {
 
         return new File(location);
+    }
+
+    public File createOutputFileWithDirectories(String outputFileLocation) {
+
+        File file = this.createFile(outputFileLocation);
+        file.getAbsoluteFile().getParentFile().mkdirs();
+
+        return file;
+    }
+
+    public void logStatus(String status) {
+
+        this.logStatus(status, null);
+    }
+
+    public void logStatus(String status, Throwable throwable) {
+
+        log.info("{} {} {} {}", uuid.toString(), this.inputFileLocation, this.outputFileLocation, status, throwable);
     }
 }
