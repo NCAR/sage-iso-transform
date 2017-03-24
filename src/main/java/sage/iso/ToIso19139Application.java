@@ -30,7 +30,7 @@ public class ToIso19139Application implements CommandLineRunner {
 
     private static String TO_ISO_19139_OLD_ISO_FROM_NEW_ISO = "toISO19139.xsl";
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         SpringApplication.run(ToIso19139Application.class, args);
     }
@@ -71,7 +71,7 @@ public class ToIso19139Application implements CommandLineRunner {
 
     public Source createToIso19139Xslt() {
 
-        return new StreamSource(new File(this.getClass().getClassLoader().getResource(TO_ISO_19139_OLD_ISO_FROM_NEW_ISO).getPath()));
+        return new StreamSource(this.getClass().getClassLoader().getResourceAsStream(TO_ISO_19139_OLD_ISO_FROM_NEW_ISO));
     }
 
     public StreamSource createStreamSource(String inputFileLocation) {
