@@ -2,7 +2,7 @@
 
 A small command line application that will take a new iso document and transform it to an old iso document.
 
-Deployment:
+Deployment
 
 Download from Artifactory.
 
@@ -15,7 +15,7 @@ https://repo.ucar.edu/artifactory/apps-release-local/sgf/iso-transform-command-l
 Example:
 $ curl https://repo.ucar.edu/artifactory/apps-snapshot-local/sgf/iso-transform-command-line/0.0.1-SNAPSHOT/iso-transform-command-line-0.0.1-20170327.162751-5.jar --output iso-transform-command-line.jar
 
-Usage:
+Usage
 
 $ java -jar iso-transform-command-line.jar --input=<NEW_ISO_FILE> --output=<OLD_ISO_FILE>
 
