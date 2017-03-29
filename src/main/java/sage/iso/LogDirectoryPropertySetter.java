@@ -32,7 +32,7 @@ public class LogDirectoryPropertySetter {
 
                 // Example output:
                 // /Users/nhook/IdeaProjects/sage-iso-transform-command-line/target/classes/
-                String logDirectory = ToIso19139Application.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+                String logDirectory = LogDirectoryPropertySetter.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
                 System.getProperties().setProperty(LOG_DIRECTORY, logDirectory);
             }
