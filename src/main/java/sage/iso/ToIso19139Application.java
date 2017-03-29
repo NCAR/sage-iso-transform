@@ -25,9 +25,11 @@ public class ToIso19139Application implements CommandLineRunner {
     @Value("${output}")
     private String outputFileLocation;
 
-    private static String TO_ISO_19139_OLD_ISO_FROM_NEW_ISO = "toISO19139.xsl";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+
+        SetLogDirectoryProperty setLogDirectoryProperty = new SetLogDirectoryProperty();
+        setLogDirectoryProperty.setLogDirectoryProperty();
 
         SpringApplication.run(ToIso19139Application.class, args);
     }
@@ -75,17 +77,12 @@ public class ToIso19139Application implements CommandLineRunner {
 
     public Source createToIso19139Xslt() {
 
-        return new StreamSource(this.getClass().getClassLoader().getResourceAsStream(TO_ISO_19139_OLD_ISO_FROM_NEW_ISO));
+        return new StreamSource(this.getClass().getClassLoader().getResourceAsStream("toISO19139.xsl"));
     }
 
     public StreamSource createStreamSource(String inputFileLocation) {
 
         return new StreamSource(createFile(inputFileLocation));
-    }
-
-    public StreamResult createStreamResult(String outputFileLocation) {
-
-        return new StreamResult(this.createOutputFileWithDirectories(outputFileLocation));
     }
 
     public File createFile(String location) {

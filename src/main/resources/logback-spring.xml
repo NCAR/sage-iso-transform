@@ -2,7 +2,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
     <appender name="TRANSFORM_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./logs/transform.log</file>
+        <file>${log_directory}/logs/transform.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
             <fileNamePattern>transform.%d{yyyy-MM-dd}.log</fileNamePattern>
@@ -19,7 +19,7 @@
     </appender>
 
     <appender name="SPRING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./logs/spring.log</file>
+        <file>${log_directory}/logs/spring.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
             <fileNamePattern>spring.%d{yyyy-MM-dd}.log</fileNamePattern>
