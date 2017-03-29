@@ -2,6 +2,16 @@
 
 A small command line application that will take a new iso document and transform it to an old iso document.
 
+## Packaging
+
+This program uses a self containted jar that is created using the [spring-boot-maven-plugin](http://docs.spring.io/spring-boot/docs/current/maven-plugin/).
+To create the .jar file run the following maven command:
+
+```
+$ mvn package spring-boot:repackage
+```
+
+
 ## Deployment
 
 Download the jar file from Artifactory using curl or wget.
@@ -15,8 +25,7 @@ https://repo.ucar.edu/artifactory/apps-release-local/sgf/iso-transform-command-l
 ### Example
 ```
 $ curl https://repo.ucar.edu/artifactory/apps-snapshot-local/sgf/iso-transform-command-line/0.0.1-SNAPSHOT/iso-transform-command-line-0.0.1-20170327.162751-5.jar --output iso-transform-command-line.jar
-```  
-  
+```
   
   
 ## Usage
