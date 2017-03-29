@@ -38,7 +38,7 @@ $ java -jar iso-transform-command-line.jar --input=<NEW_ISO_FILE> --output=<OLD_
 $ java -jar iso-transform-command-line.jar --input=/home/vagrant/dset-web-accessible-folder-iso19115-3/eol/102.009_HLY-07-01_SCS_Underway_Sensor_Data_ISO-19115-3.xml --output=/home/vagrant/dset-web-accessible-folder-dev/eol/102.009_HLY-07-01_SCS_Underway_Sensor_Data_ISO-19115-3.xml
 ```
 
-To get the exit success (0) or failure (1) output from inside a script:
+To get the exit status indicator of either success (0) or failure (1) from inside a script:
 ```
 java -jar iso-transform-command-line.jar --input=<NEW_ISO_FILE> --output=<OLD_ISO_FILE>
 result=$?
