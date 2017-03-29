@@ -37,6 +37,10 @@ public class ToIso19139Application implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
+        // TODO All this behavior belongs behind an interface where the first layer logs all the important information.
+        // The next layer will take the output of the transformation (last layer) and write it to disk.
+        // The last layer actually does the transformation.
+        // This method should only call the interface and do the System.exit behavior with the try catch statements.
         try {
 
             this.logStatus("STARTED");
