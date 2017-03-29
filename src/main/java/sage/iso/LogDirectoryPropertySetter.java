@@ -2,20 +2,20 @@ package sage.iso;
 
 import java.net.URISyntaxException;
 
-public class SetLogDirectoryProperty {
+public class LogDirectoryPropertySetter {
 
     private String resourceLocation = null;
 
     private static String LOG_DIRECTORY = "log_directory";
 
-    public SetLogDirectoryProperty() {
+    public LogDirectoryPropertySetter() {
 
         try {
 
-            this.resourceLocation = SetLogDirectoryProperty.class.getResource(SetLogDirectoryProperty.class.getSimpleName() + ".class").toURI().toString();
+            this.resourceLocation = LogDirectoryPropertySetter.class.getResource(LogDirectoryPropertySetter.class.getSimpleName() + ".class").toURI().toString();
 
         } catch (URISyntaxException e) {
-            throw new ResourceLocationException("Cannot get resource location for SetLogDirectoryProperty class.", e);
+            throw new ResourceLocationException("Cannot get resource location for LogDirectoryPropertySetter class.", e);
         }
 
     }
@@ -47,10 +47,10 @@ public class SetLogDirectoryProperty {
     // Example resourceLocation values.
     //
     // When running though an IDE:
-    // file:/Users/nhook/IdeaProjects/sage-iso-transform-command-line/target/classes/sage/iso/SetLogDirectoryProperty.class
+    // file:/Users/nhook/IdeaProjects/sage-iso-transform-command-line/target/classes/sage/iso/LogDirectoryPropertySetter.class
     //
     // When running as a Jar file:
-    // jar:file:/Users/nhook/Downloads/iso-transform/iso-transform-command-line-0.0.1-SNAPSHOT.jar!/BOOT-INF/classes!/sage/iso/SetLogDirectoryProperty.class
+    // jar:file:/Users/nhook/Downloads/iso-transform/iso-transform-command-line-0.0.1-SNAPSHOT.jar!/BOOT-INF/classes!/sage/iso/LogDirectoryPropertySetter.class
     public boolean isRunAsJarExecutable() {
 
         return this.resourceLocation.startsWith("jar:");

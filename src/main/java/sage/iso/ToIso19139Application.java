@@ -28,8 +28,8 @@ public class ToIso19139Application implements CommandLineRunner {
 
     public static void main(String[] args) throws Exception {
 
-        SetLogDirectoryProperty setLogDirectoryProperty = new SetLogDirectoryProperty();
-        setLogDirectoryProperty.setLogDirectoryProperty();
+        LogDirectoryPropertySetter logDirectoryPropertySetter = new LogDirectoryPropertySetter();
+        logDirectoryPropertySetter.setLogDirectoryProperty();
 
         SpringApplication.run(ToIso19139Application.class, args);
     }
