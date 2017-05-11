@@ -64,6 +64,7 @@ public class ToIso19139Application implements CommandLineRunner {
         } catch (Exception e) {
 
             this.logStatus("ERROR", e);
+            log.error(e.getMessage());
             System.exit(1);
         }
 
