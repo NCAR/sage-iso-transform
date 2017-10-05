@@ -55,7 +55,7 @@
     </xd:desc>
   </xd:doc>
 
-  <xsl:output method="xml" indent="yes"/>
+  <xsl:output method="xml" encoding="us-ascii" indent="yes"/>
 
   <xsl:strip-space elements="*"/>
 
@@ -819,7 +819,7 @@
           <xsl:text>srv</xsl:text>
         </xsl:when>
         <xsl:when test="ancestor-or-self::mco:MD_Constraints
-          or ancestor-or-self::mco:MD_SecurityConstraints 
+          or ancestor-or-self::mco:MD_SecurityConstraints
           or ancestor-or-self::mco:MD_LegalConstraints
           ">
           <xsl:text>gmd</xsl:text>
@@ -830,7 +830,7 @@
         <xsl:when test="ancestor-or-self::cit:CI_ResponsibleParty or ancestor-or-self::cit:CI_OnlineResource">
           <xsl:text>gmd</xsl:text>
         </xsl:when>
-        <xsl:when test="ancestor-or-self::mcc:MD_ScopeCode or ancestor-or-self::mcc:MX_ScopeCode 
+        <xsl:when test="ancestor-or-self::mcc:MD_ScopeCode or ancestor-or-self::mcc:MX_ScopeCode
           or ancestor-or-self::mcc:MD_ScopeDescription">
           <xsl:text>gmd</xsl:text>
         </xsl:when>
@@ -874,7 +874,7 @@
         <xsl:when test="ancestor-or-self::mmi:MD_MaintenanceInformation">
           <xsl:text>gmd</xsl:text>
         </xsl:when>
-        <xsl:when test="ancestor-or-self::mri:MD_DataIdentification 
+        <xsl:when test="ancestor-or-self::mri:MD_DataIdentification
           or ancestor-or-self::mri:MD_SpatialRepresentationTypeCode">
           <xsl:text>gmd</xsl:text>
         </xsl:when>
