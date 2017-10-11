@@ -55,7 +55,10 @@
     </xd:desc>
   </xd:doc>
 
-  <xsl:output method="xml" encoding="us-ascii" indent="yes"/>
+  <xsl:output method="xml"
+              encoding="us-ascii"
+              indent="yes"
+              cdata-section-elements="gco:CharacterString" />
 
   <xsl:strip-space elements="*"/>
 
