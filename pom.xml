@@ -29,6 +29,10 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -36,10 +40,11 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.5.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -55,36 +60,91 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- http://maven.apache.org/surefire/maven-surefire-plugin/
+                 The Surefire Plugin is used during the test phase of the build lifecycle to execute the unit tests of
+                 an application. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+            </plugin>
+
+            <!-- http://www.eclemma.org/jacoco/trunk/doc/maven.html
+
+                 Helps with determining code coverage. -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.7.201606060606</version>
+                <version>0.8.1</version>
                 <executions>
                     <execution>
-                        <id>pre-unit-test</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                        <configuration>
-                            <destFile>${project.build.directory}/jacoco.exec</destFile>
-                            <propertyName>surefireArgLine</propertyName>
-                        </configuration>
                     </execution>
                     <execution>
-                        <id>post-unit-test</id>
-                        <phase>test</phase>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
-                        <configuration>
-                            <dataFile>${project.build.directory}/jacoco.exec</dataFile>
-                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+
+    <!-- The following reports are run by the following maven command:
+         mvn site:site -->
+    <reporting>
+        <plugins>
+            <!-- https://maven.apache.org/plugins/maven-checkstyle-plugin/usage.html
+                 Checkstyle is a development tool to help programmers write Java code that adheres to a coding standard.
+                 It automates the process of checking Java code to spare humans of this boring (but important) task.
+                 This makes it ideal for projects that want to enforce a coding standard. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+            <!-- https://gleclaire.github.io/findbugs-maven-plugin/
+                 FindBugs looks for bugs in Java programs. It is based on the concept of bug patterns. A bug pattern is
+                 a code idiom that is often an error.
+
+                 The findbugs plugin requires the code to be compiled prior to running.
+                 so the following maven commands would work:
+                 mvn compile site:site
+                 mvn test site:site -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>3.0.5</version>
+            </plugin>
+            <!-- https://maven.apache.org/plugins/maven-pmd-plugin/
+                 PMD is a source code analyzer. It finds common programming flaws like unused variables, empty catch
+                 blocks, unnecessary object creation, and so forth.
+
+                 Additionally it includes CPD, the copy-paste-detector. CPD finds duplicated code... -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.9.0</version>
+                <configuration>
+                    <targetJdk>${java.version}</targetJdk>
+                    <skipEmptyReport>false</skipEmptyReport>
+                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>pmd</report>
+                            <report>cpd</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

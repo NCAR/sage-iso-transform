@@ -5,61 +5,57 @@
 version: 2
 jobs:
   build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/openjdk:8-jdk
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
 
-    # working_directory: ~/repo
+    docker:
+      - image: circleci/openjdk:8-jdk
 
     environment:
-      # Customize the JVM maximum heap limit
       MAVEN_OPTS: -Xmx3200m
-    
+
     steps:
+
       - checkout
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "pom.xml" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+#      - restore_cache:
+#          key: v1-cached-dependencies-{{ checksum "pom.xml" }}
 
       - run:
-          name: "Download dependencies"
-          command: mvn -s .circleci/settings.xml dependency:resolve-plugins dependency:go-offline
-
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
-        
-      # run tests!
-      # - run: mvn integration-test
+          name: "Download Dependencies"
+          command: mvn -s .circleci/settings.xml dependency:go-offline
 
       - run:
-          name: "Package"
-          #command: mvn -s .circleci/settings.xml --quiet package
-          #command: mvn -s .circleci/settings.xml package
-          #command: mvn package
-          command: mvn -s .circleci/settings.xml -Dtarget=deployment deploy
-          #command: mvn -Dtarget=deployment deploy
+          name: "Unit Tests w/jacoco"
+          command: mvn -s .circleci/settings.xml test
+
+      - run:
+          name: "Static Code Analysis: checkstyle, findbugs, pmd, and cdp"
+          command: mvn -s .circleci/settings.xml site pmd:pmd checkstyle:checkstyle jacoco:report
+
+      - run:
+          name: "Package and Upload to Artifactory"
+          command: mvn -s .circleci/settings.xml -Dmaven.test.skip=true deploy
+
+#      - save_cache:
+#          paths:
+#            - ~/.m2
+#          key: v1-cached-dependencies-{{ checksum "pom.xml" }}
 
       - store_test_results:
           path: ./target/surefire-reports
 
       - store_artifacts:
+          name: "Upload Surefire Reports to CircleCI"
           path: ./target/surefire-reports
-          destination: tr
+          destination: unit_test_report
+
+      - store_artifacts:
+          name: "Upload Static Analysis Reports to CircleCI"
+          path: ./target/site/
+          destination: static_analysis_report
 
 workflows:
   version: 2
-  my-workflow:
+  iso-transform-workflow:
     jobs:
       - build:
           context: sage
