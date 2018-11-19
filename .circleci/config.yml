@@ -7,7 +7,7 @@ jobs:
   build:
 
     docker:
-      - image: circleci/openjdk:8-jdk
+      - image: circleci/openjdk:8u151-jdk
 
     environment:
       MAVEN_OPTS: -Xmx3200m
@@ -21,37 +21,37 @@ jobs:
 
       - run:
           name: "Download Dependencies"
-          command: mvn -s .circleci/settings.xml dependency:go-offline
+          command: mvn --quiet -s .circleci/settings.xml dependency:go-offline
 
       - run:
           name: "Unit Tests w/jacoco"
-          command: mvn -s .circleci/settings.xml test
+          command: mvn --quiet -s .circleci/settings.xml test
 
-      - run:
-          name: "Static Code Analysis: checkstyle, findbugs, pmd, and cdp"
-          command: mvn -s .circleci/settings.xml site pmd:pmd checkstyle:checkstyle jacoco:report
+#      - run:
+#          name: "Static Code Analysis: checkstyle, findbugs, pmd, and cdp"
+#          command: mvn --quiet -s .circleci/settings.xml site pmd:pmd checkstyle:checkstyle jacoco:report
 
       - run:
           name: "Package and Upload to Artifactory"
-          command: mvn -s .circleci/settings.xml -Dmaven.test.skip=true deploy
+          command: mvn --quiet -s .circleci/settings.xml -Dmaven.test.skip=true deploy
 
 #      - save_cache:
 #          paths:
 #            - ~/.m2
 #          key: v1-cached-dependencies-{{ checksum "pom.xml" }}
 
-      - store_test_results:
-          path: ./target/surefire-reports
+#      - store_test_results:
+#          path: ./target/surefire-reports
 
-      - store_artifacts:
-          name: "Upload Surefire Reports to CircleCI"
-          path: ./target/surefire-reports
-          destination: unit_test_report
+#      - store_artifacts:
+#          name: "Upload Surefire Reports to CircleCI"
+#          path: ./target/surefire-reports
+#          destination: unit_test_report
 
-      - store_artifacts:
-          name: "Upload Static Analysis Reports to CircleCI"
-          path: ./target/site/
-          destination: static_analysis_report
+#      - store_artifacts:
+#          name: "Upload Static Analysis Reports to CircleCI"
+#          path: ./target/site/
+#          destination: static_analysis_report
 
 workflows:
   version: 2
