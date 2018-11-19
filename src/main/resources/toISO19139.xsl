@@ -57,8 +57,7 @@
 
   <xsl:output method="xml"
               encoding="us-ascii"
-              indent="yes"
-              cdata-section-elements="gco:CharacterString" />
+              indent="yes" />
 
   <xsl:strip-space elements="*"/>
 
@@ -211,8 +210,16 @@
         <xsl:value-of select="cit:CI_Citation/cit:edition/*"/>
       </gco:CharacterString>
     </gmd:metadataStandardVersion>
+    <xsl:for-each select = "//mdb:identificationInfo/mri:MD_DataIdentification/mri:citation/cit:CI_Citation/cit:onlineResource/cit:CI_OnlineResource">
+      <xsl:if test="cit:name/gco2:CharacterString='Resource Homepage'">
+       <gmd:dataSetURI>
+        <gco:CharacterString>
+          <xsl:value-of select="cit:linkage/gco2:CharacterString"/>
+        </gco:CharacterString>
+       </gmd:dataSetURI>
+      </xsl:if>
+    </xsl:for-each>
   </xsl:template>
-
 
   <xsl:template match="mdb:identificationInfo">
     <gmd:identificationInfo>
