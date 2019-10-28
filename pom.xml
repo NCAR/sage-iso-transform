@@ -18,14 +18,14 @@
 
     <distributionManagement>
         <repository>
-            <id>repo.ucar.edu</id>
-            <name>repo.ucar.edu-releases</name>
-            <url>https://repo.ucar.edu/artifactory/apps-release-local</url>
+            <id>archiva.ucar.edu</id>
+            <name>archiva.ucar.edu-releases</name>
+            <url>https://archiva.ucar.edu/repository/sage-package-release</url>
         </repository>
         <snapshotRepository>
-            <id>repo.ucar.edu</id>
-            <name>repo.ucar.edu-snapshots</name>
-            <url>https://repo.ucar.edu/artifactory/apps-snapshot-local</url>
+            <id>archiva.ucar.edu</id>
+            <name>archiva.ucar.edu-snapshots</name>
+            <url>https://archiva.ucar.edu/repository/sage-package-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 

@@ -17,10 +17,10 @@ $ mvn package spring-boot:repackage
 Download the jar file from Artifactory using curl or wget.
 
 ### Snapshots
-https://repo.ucar.edu/artifactory/apps-snapshot-local/sgf/iso-transform-command-line/
+https://archiva.ucar.edu/repository/sage-package-snapshots/sgf/iso-transform-command-line/
 
 ### Releases
-https://repo.ucar.edu/artifactory/apps-release-local/sgf/iso-transform-command-line/
+https://archiva.ucar.edu/repository/sage-package-release/sgf/iso-transform-command-line/
 
 ### Example
 ```

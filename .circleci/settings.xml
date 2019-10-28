@@ -1,17 +1,9 @@
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
-    <!--<mirrors>-->
-        <!--<mirror>-->
-            <!--<id>repo.ucar.edu</id>-->
-            <!--<name>Maven Repository Manager running on repo.ucar.edu</name>-->
-            <!--<url>https://repo.ucar.edu/artifactory/public/</url>-->
-            <!--<mirrorOf>*</mirrorOf>-->
-        <!--</mirror>-->
-    <!--</mirrors>-->
+<settings>
     <servers>
         <server>
-            <id>repo.ucar.edu</id>
-            <username>${env.artifactory_user}</username>
-            <password>${env.artifactory_pass}</password>
+            <id>archiva.ucar.edu</id>
+            <username>${env.ARCHIVA_USER}</username>
+            <password>${env.ARCHIVA_PASS}</password>
         </server>
     </servers>
 </settings>
