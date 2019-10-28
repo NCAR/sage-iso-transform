@@ -14,7 +14,7 @@ $ mvn package spring-boot:repackage
 
 ## Deployment
 
-Download the jar file from Artifactory using curl or wget.
+Download the jar file from Archiva Repository using curl or wget.
 
 ### Snapshots
 https://archiva.ucar.edu/repository/sage-package-snapshots/sgf/iso-transform-command-line/
@@ -24,7 +24,7 @@ https://archiva.ucar.edu/repository/sage-package-release/sgf/iso-transform-comma
 
 ### Example
 ```
-$ curl https://repo.ucar.edu/artifactory/apps-snapshot-local/sgf/iso-transform-command-line/0.0.1-SNAPSHOT/iso-transform-command-line-0.0.1-20170327.162751-5.jar --output iso-transform-command-line.jar
+$ curl https://archiva.ucar.edu/repository/sage-package-snapshots/sgf/iso-transform-command-line/0.0.2-SNAPSHOT/iso-transform-command-line-0.0.2-20191028.161503-1.jar --output iso-transform-command-line.jar
 ```
   
   
