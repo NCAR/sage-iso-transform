@@ -20,12 +20,12 @@
         <repository>
             <id>archiva.ucar.edu</id>
             <name>archiva.ucar.edu-releases</name>
-            <url>https://archiva.ucar.edu/repository/sage-apps-release</url>
+            <url>https://archiva.ucar.edu/repository/sage-app-release</url>
         </repository>
         <snapshotRepository>
             <id>archiva.ucar.edu</id>
             <name>archiva.ucar.edu-snapshots</name>
-            <url>https://archiva.ucar.edu/repository/sage-apps-snapshots</url>
+            <url>https://archiva.ucar.edu/repository/sage-app-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
