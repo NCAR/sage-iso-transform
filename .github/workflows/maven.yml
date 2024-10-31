@@ -1,3 +1,4 @@
+
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
 
@@ -6,29 +7,32 @@ name: Java CI with Maven
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
-  
+
     runs-on: ubuntu-latest
 
-    # This is a workaround for tests that rely on the Denver time zone
-    env:
-      TZ: America/Denver  # Setting timezone to MST/MDT (Mountain Standard Time / Mountain Daylight Time)
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 8
-      uses: actions/setup-java@v4
-      with:
-        java-version: '8'
-        distribution: 'temurin'
-        cache: maven
+      - uses: actions/checkout@v4
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+      - name: Deploy Package
+        run: mvn --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
 
-    - name: Run tests with Maven
-      run: mvn -B test --file pom.xml
-      # env:
-      #   GITHUB_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
-
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@v4 
+    # Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
+    # More information:
+    # https://github.com/marketplace/actions/maven-dependency-tree-dependency-submission
+    # https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/configuring-the-dependency-graph
+      - name: Update dependency graph
+        uses: advanced-security/maven-dependency-submission-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
