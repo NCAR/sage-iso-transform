@@ -31,9 +31,10 @@ jobs:
 #          name: "Static Code Analysis: checkstyle, findbugs, pmd, and cdp"
 #          command: mvn --quiet -s .circleci/settings.xml site pmd:pmd checkstyle:checkstyle jacoco:report
 
-      - run:
-          name: "Package and Upload to Artifactory"
-          command: mvn --quiet -s .circleci/settings.xml -Dmaven.test.skip=true deploy
+# GTWY-6259
+#      - run:
+#          name: "Package and Upload to Artifactory"
+#          command: mvn --quiet -s .circleci/settings.xml -Dmaven.test.skip=true deploy
 
 #      - save_cache:
 #          paths:
