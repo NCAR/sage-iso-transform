@@ -533,7 +533,6 @@
             test="
               cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name |
               cit:party/cit:CI_Individual/cit:name">
-            <!-- This template operates on individual names in organizations or alone. -->
             <xsl:call-template name="writeCharacterStringElement">
               <xsl:with-param name="elementName" select="'gmd:individualName'"/>
               <xsl:with-param name="nodeWithStringToWrite"
@@ -599,12 +598,11 @@
           count(cit:party/cit:CI_Organisation/cit:name/gcx:Anchor) > 0">
         <xsl:element name="gmd:CI_ResponsibleParty">
           <xsl:if test="./cit:party/cit:CI_Individual/cit:name/gcx:Anchor"> 
-            <xsl:element name="gmd:individualName"> 
-              <xsl:element name="gmx:Anchor">
-                <xsl:apply-templates
-                  select="./cit:party/cit:CI_Individual/cit:name/gcx:Anchor/@*"/> 
-                </xsl:element> 
-            </xsl:element> 
+            <xsl:call-template name="writeAnchorElement">
+              <xsl:with-param name="elementName" select="'gmd:individualName'"/>
+              <xsl:with-param name="nodeWithAnchorToWrite"
+                select="./cit:party/cit:CI_Individual/cit:name/gcx:Anchor"/>
+            </xsl:call-template>
           </xsl:if>
           <xsl:choose>
             <xsl:when test="./cit:role/cit:CI_RoleCode">
@@ -764,6 +762,7 @@
       </xsl:element>
     </xsl:if>
   </xsl:template>
+  
   <xsl:template name="writeCharacterStringElement">
     <xsl:param name="elementName"/>
     <xsl:param name="nodeWithStringToWrite"/>
@@ -789,6 +788,22 @@
       </xsl:when>
     </xsl:choose>
   </xsl:template>
+
+  <xsl:template name="writeAnchorElement">
+    <xsl:param name="elementName"/>
+    <xsl:param name="nodeWithAnchorToWrite"/>
+    <xsl:choose>
+      <xsl:when test="$nodeWithAnchorToWrite">
+        <xsl:element name="{$elementName}">
+          <xsl:element name="gmx:Anchor">
+        <xsl:copy-of select="$nodeWithAnchorToWrite/@*"/>
+            <xsl:value-of select="$nodeWithAnchorToWrite/@xlink:title"/>
+          </xsl:element>
+      </xsl:element>
+    </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template name="characterStringSubstitutions">
     <xsl:param name="parentElement"/>
     <!-- This template takes a parent of a gco:CharacterString element and writes out the child for several possible substitutions  -->
