@@ -597,11 +597,14 @@
           count(cit:party/cit:CI_Individual/cit:positionName/gcx:Anchor) +
           count(cit:party/cit:CI_Organisation/cit:name/gcx:Anchor) > 0">
         <xsl:element name="gmd:CI_ResponsibleParty">
-          <xsl:if test="./cit:party/cit:CI_Individual/cit:name/gcx:Anchor"> 
+          <xsl:if test="              
+            cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name |
+            cit:party/cit:CI_Individual/cit:name">
             <xsl:call-template name="writeAnchorElement">
               <xsl:with-param name="elementName" select="'gmd:individualName'"/>
               <xsl:with-param name="nodeWithAnchorToWrite"
-                select="./cit:party/cit:CI_Individual/cit:name/gcx:Anchor"/>
+                select="./cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gcx:Anchor |
+                        ./cit:party/cit:CI_Individual/cit:name/gcx:Anchor"/>
             </xsl:call-template>
           </xsl:if>
           <xsl:choose>
