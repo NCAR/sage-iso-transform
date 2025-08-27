@@ -62,7 +62,7 @@
     <xsl:namespace name="gmi" select="'http://www.isotc211.org/2005/gmi'"/>
     <!-- external namespaces -->
     <xsl:namespace name="gml" select="'http://www.opengis.net/gml'"/>
-    <xsl:namespace name="xlink" select="'http://www.w3.org/1999/xlink'"/>
+    <xsl:namespace name="xlink" select="'http://www.w3.org/1999/xlink'"/>    
   </xsl:template>
   <xsl:template match="/">
     <!--
@@ -73,6 +73,7 @@
         <xsl:call-template name="getNamespacePrefix"/>
       </xsl:variable>
       <xsl:element name="{concat($nameSpacePrefix,':',local-name(.))}">
+        <xsl:attribute name="xsi:schemaLocation">http://www.isotc211.org/2005/gmd http://www.isotc211.org/2005/gmx/gmx.xsd</xsl:attribute>
         <xsl:call-template name="add-namespaces"/>
         <xsl:apply-templates select="mdb:metadataIdentifier"/>
         <xsl:apply-templates select="mdb:defaultLocale"/>
@@ -514,55 +515,97 @@
     </gmd:editionDate>
   </xsl:template>
   <xsl:template match="cit:CI_Responsibility" priority="5">
+    <!--
+      This template was modified by Ted Habermann (ted@metadatagamechangers.com) during August 2025 to add the
+      capability to translate anchors for organizations and individuals from 19115-1 to 19115.
+      -->
     <xsl:choose>
       <xsl:when
         test="
-          count(cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco2:CharacterString) +
-          count(cit:party/cit:CI_Individual/cit:name/gco2:CharacterString) +
-          count(cit:party/cit:CI_Organisation/cit:name/gco2:CharacterString) > 0">
+        count(cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco2:CharacterString) +
+        count(cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:positionName/gco2:CharacterString) +
+        count(cit:party/cit:CI_Individual/cit:name/gco2:CharacterString) +
+        count(cit:party/cit:CI_Individual/cit:positionName/gco2:CharacterString) +
+        count(cit:party/cit:CI_Organisation/cit:name/gco2:CharacterString) +
+        count(cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gcx:Anchor) +
+        count(cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:positionName/gcx:Anchor) +
+        count(cit:party/cit:CI_Individual/cit:name/gcx:Anchor) +
+        count(cit:party/cit:CI_Individual/cit:positionName/gcx:Anchor) +
+        count(cit:party/cit:CI_Organisation/cit:name/gcx:Anchor) > 0">
         <!--
-          CI_ResponsibleParties that include name elements (individualName, organisationName, or positionName) are translated to CI_Responsibilities.
-          CI_ResponsibleParties without name elements are assummed to be placeholders for CI_OnlineResources. They are transformed later in the process
-          using the CI_ResponsiblePartyToOnlineReseource template
-        -->
+                CI_ResponsibleParties that include name elements (individualName, organisationName, or positionName) are translated to CI_Responsibilities.
+                CI_ResponsibleParties without name elements are assummed to be placeholders for CI_OnlineResources. They are transformed later in the process
+                using the CI_ResponsiblePartyToOnlineReseource template
+            -->
         <xsl:element name="gmd:CI_ResponsibleParty">
           <xsl:apply-templates select="@*"/>
+          <!-- 
+                    Translate individual names in organizations or alone
+                    First names with characterStrings
+                -->
           <xsl:if
             test="
-              cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name |
-              cit:party/cit:CI_Individual/cit:name">
+            cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco2:CharacterString |
+            cit:party/cit:CI_Individual/cit:name/gco2:CharacterString">
             <xsl:call-template name="writeCharacterStringElement">
               <xsl:with-param name="elementName" select="'gmd:individualName'"/>
               <xsl:with-param name="nodeWithStringToWrite"
                 select="
-                  cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name |
-                  cit:party/cit:CI_Individual/cit:name"
+                cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name |
+                cit:party/cit:CI_Individual/cit:name"
               />
             </xsl:call-template>
           </xsl:if>
-          
-          <xsl:if test="cit:party/cit:CI_Organisation/cit:name">
+          <!-- 
+                    Then names with Anchors
+                -->
+          <xsl:if test="              
+            cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gcx:Anchor |
+            cit:party/cit:CI_Individual/cit:name/gcx:Anchor">
+            <xsl:call-template name="writeAnchorElement">
+              <xsl:with-param name="elementName" select="'gmd:individualName'"/>
+              <xsl:with-param name="nodeWithAnchorToWrite"
+                select="./cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gcx:Anchor |
+                ./cit:party/cit:CI_Individual/cit:name/gcx:Anchor"/>
+            </xsl:call-template>
+          </xsl:if>
+          <!-- 
+                    Translate organizations with characterStrings
+                -->
+          <xsl:if test="cit:party/cit:CI_Organisation/cit:name/gco2:CharacterString">
             <xsl:call-template name="writeCharacterStringElement">
               <xsl:with-param name="elementName" select="'gmd:organisationName'"/>
               <xsl:with-param name="nodeWithStringToWrite"
                 select="cit:party/cit:CI_Organisation/cit:name"/>
             </xsl:call-template>
           </xsl:if>
-          
+          <!--
+                    Then with anchors
+                -->
+          <xsl:if test="cit:party/cit:CI_Organisation/cit:name/gcx:Anchor">
+            <xsl:call-template name="writeAnchorElement">
+              <xsl:with-param name="elementName" select="'gmd:organisationName'"/>
+              <xsl:with-param name="nodeWithAnchorToWrite"
+                select="cit:party/cit:CI_Organisation/cit:name/gcx:Anchor"/>
+            </xsl:call-template>
+          </xsl:if>
+          <!-- 
+                    Add position name
+                -->
           <xsl:if
             test="
-              cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:positionName |
-              cit:party/cit:CI_Individual/cit:positionName">
+            cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:positionName |
+            cit:party/cit:CI_Individual/cit:positionName">
             <xsl:call-template name="writeCharacterStringElement">
               <xsl:with-param name="elementName" select="'gmd:positionName'"/>
               <xsl:with-param name="nodeWithStringToWrite"
                 select="
-                  cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:positionName |
-                  cit:party/cit:CI_Individual/cit:positionName"
+                cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:positionName |
+                cit:party/cit:CI_Individual/cit:positionName"
               />
             </xsl:call-template>
           </xsl:if>
-
+          
           <!-- contactInformation comes before indivudual/position -->
           <xsl:call-template name="writeContactInformation"/>
           <xsl:choose>
@@ -586,80 +629,7 @@
         </xsl:element>
       </xsl:when>
     </xsl:choose>
-    <xsl:choose>
-      <!--
-          CI_ResponsibleParties that include gcx:Anchor elements (individualName, organisationName, or positionName) 
-          are also translated to CI_ResponsiblePartys.
-        -->
-      <xsl:when
-        test="
-          count(cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gcx:Anchor) +
-          count(cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:positionName/gcx:Anchor) +
-          count(cit:party/cit:CI_Individual/cit:name/gcx:Anchor) +
-          count(cit:party/cit:CI_Individual/cit:positionName/gcx:Anchor) +
-          count(cit:party/cit:CI_Organisation/cit:name/gcx:Anchor) > 0">
-        
-        <xsl:element name="gmd:CI_ResponsibleParty">
-          <!-- 
-            Individuals can occur by themselves or in organizations 
-          -->
-          <xsl:if test="              
-            cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name |
-            cit:party/cit:CI_Individual/cit:name">
-            <xsl:call-template name="writeAnchorElement">
-              <xsl:with-param name="elementName" select="'gmd:individualName'"/>
-              <xsl:with-param name="nodeWithAnchorToWrite"
-                select="./cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gcx:Anchor |
-                        ./cit:party/cit:CI_Individual/cit:name/gcx:Anchor"/>
-            </xsl:call-template>
-          </xsl:if>
-          <!-- 
-            Organizations can occur by themselves and may have ROR identifiers in Anchors 
-          -->          
-          <xsl:if test="cit:party/cit:CI_Organisation/cit:name">
-            <xsl:call-template name="writeAnchorElement">
-              <xsl:with-param name="elementName" select="'gmd:organisationName'"/>
-              <xsl:with-param name="nodeWithAnchorToWrite"
-                select="cit:party/cit:CI_Organisation/cit:name/gcx:Anchor"/>
-            </xsl:call-template>
-          </xsl:if>
-          
-          <xsl:if
-            test="
-            cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:positionName |
-            cit:party/cit:CI_Individual/cit:positionName">
-            <xsl:call-template name="writeCharacterStringElement">
-              <xsl:with-param name="elementName" select="'gmd:positionName'"/>
-              <xsl:with-param name="nodeWithStringToWrite"
-                select="
-                cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:positionName |
-                cit:party/cit:CI_Individual/cit:positionName"
-              />
-            </xsl:call-template>
-          </xsl:if>          
-          
-          <xsl:choose>
-            <xsl:when test="./cit:role/cit:CI_RoleCode">
-              <xsl:call-template name="writeCodelistElement">
-                <xsl:with-param name="elementName" select="'gmd:role'"/>
-                <xsl:with-param name="codeListName" select="'gmd:CI_RoleCode'"/>
-                <xsl:with-param name="codeListValue"
-                  select="cit:role/cit:CI_RoleCode/@codeListValue"/>
-              </xsl:call-template>
-            </xsl:when>
-            <xsl:when test="./gmd:role/@*">
-              <gmd:role>
-                <xsl:apply-templates select="@*"/>
-              </gmd:role>
-            </xsl:when>
-            <xsl:otherwise>
-              <gmd:role gco:nilReason="missing"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:element>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
+  </xsl:template>  
   <xsl:template name="writeContactInformation">
     <xsl:for-each select="cit:party/*/cit:contactInfo">
       <gmd:contactInfo>
@@ -824,6 +794,10 @@
   </xsl:template>
 
   <xsl:template name="writeAnchorElement">
+    <!-- 
+      This template was added by Ted Habermann (ted@metadatagamechangers.com) during August 2025 to
+      enable the translation of anchors for organizations and people.
+    -->
     <xsl:param name="elementName"/>
     <xsl:param name="nodeWithAnchorToWrite"/>
     <xsl:choose>
