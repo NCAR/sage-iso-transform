@@ -518,9 +518,7 @@
       <xsl:when
         test="
           count(cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco2:CharacterString) +
-          count(cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:positionName/gco2:CharacterString) +
           count(cit:party/cit:CI_Individual/cit:name/gco2:CharacterString) +
-          count(cit:party/cit:CI_Individual/cit:positionName/gco2:CharacterString) +
           count(cit:party/cit:CI_Organisation/cit:name/gco2:CharacterString) > 0">
         <!--
           CI_ResponsibleParties that include name elements (individualName, organisationName, or positionName) are translated to CI_Responsibilities.
