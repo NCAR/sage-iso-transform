@@ -14,7 +14,9 @@ $ mvn package spring-boot:repackage
 
 ## Deployment
 
-Download the jar file from Archiva Repository using curl or wget.
+OUTDATED:  Download the jar file from Archiva Repository using curl or wget.
+
+CURRENT: The jar file should appear in a local subdirectory called "target".
 
 ### Snapshots
 https://archiva.ucar.edu/repository/sage-package-snapshots/sgf/iso-transform-command-line/
