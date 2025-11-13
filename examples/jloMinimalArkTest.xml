@@ -26,8 +26,6 @@
     xmlns:msr="http://standards.iso.org/iso/19115/-3/msr/2.0"
     xmlns:srv="http://standards.iso.org/iso/19115/-3/srv/2.0"
     xsi:schemaLocation="http://standards.iso.org/iso/19115/-3/mdb/2.0 http://standards.iso.org/iso/19115/-3/mdt/2.0/mdt.xsd">
-    <mdb:defaultLocale/>
-    <mdb:metadataScope/>
     <mdb:metadataIdentifier>
         <!-- ARK_ID skip authority for now -->
         <mcc:MD_Identifier>
