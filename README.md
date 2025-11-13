@@ -22,21 +22,8 @@ The transformed files will be in the top level directory.   The input files are 
 
 ## Deployment
 
-OUTDATED:  Download the jar file from Archiva Repository using curl or wget.
+The jar file should appear in a local subdirectory within the Docker container called "target".
 
-CURRENT: The jar file should appear in a local subdirectory called "target".
-
-### Snapshots
-https://archiva.ucar.edu/repository/sage-package-snapshots/sgf/iso-transform-command-line/
-
-### Releases
-https://archiva.ucar.edu/repository/sage-package-release/sgf/iso-transform-command-line/
-
-### Example
-```
-$ curl https://archiva.ucar.edu/repository/sage-package-snapshots/sgf/iso-transform-command-line/0.0.2-SNAPSHOT/iso-transform-command-line-0.0.2-20191028.161503-1.jar --output iso-transform-command-line.jar
-```
-  
   
 ## Usage
 ```
