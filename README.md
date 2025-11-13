@@ -11,6 +11,14 @@ To create the .jar file run the following maven command:
 $ mvn package spring-boot:repackage
 ```
 
+Or, alternatively, you may run the following docker commands:
+```
+docker build -t iso-transformer .
+
+docker run iso-transformer sleep infinity
+```
+Then use Docker dashboard to view the running container.   Click the container name, then click the "Exec" tab to open a terminal session within it. 
+The transformed files will be in the top level directory.   The input files are in the folder "examples".
 
 ## Deployment
 
