@@ -4,7 +4,7 @@ A small command line application that will take a new iso document and transform
 
 ## Packaging
 
-This program uses a self containted jar that is created using the [spring-boot-maven-plugin](http://docs.spring.io/spring-boot/docs/current/maven-plugin/).
+This program uses a self contained jar that is created using the [spring-boot-maven-plugin](http://docs.spring.io/spring-boot/docs/current/maven-plugin/).
 To create the .jar file run the following maven command:
 
 ```
