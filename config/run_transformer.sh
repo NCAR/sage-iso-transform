@@ -6,14 +6,15 @@ set -x
 #
 # Constants that may require admin configuration
 #
-BASE_DIR='/usr/local'
+BASE_DIR='/usr/local/wafs'
 INPUT_WAF="$BASE_DIR/dset-web-accessible-folder-iso19115-3-dev"
 OUTPUT_WAF="$BASE_DIR/dset-web-accessible-folder-dev"
 
-TRANSFORM_JAR_PATH="$BASE_DIR/iso-transform-command-line/iso-transform-command-line.jar"
-LOG_FILE="$BASE_DIR/sage-dset-transform-iso19139/cron/transformer.log"
+APP_DIR='/app'
+TRANSFORM_JAR_PATH=`ls $APP_DIR/target/*.jar`
+LOG_FILE="$APP_DIR/transformer.log"
 
-WAF_STATUS_COMMAND="$BASE_DIR/sage-dset-transform-iso19139/cron/check_git.sh"
+WAF_STATUS_COMMAND="$APP_DIR/check_git.sh"
 
 SECRETS_TOKEN="@github.com"
 
