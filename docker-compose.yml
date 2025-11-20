@@ -1,0 +1,12 @@
+volumes:
+  waf_dir:
+
+
+services:
+  ckan:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - waf_dir:/usr/local/wafs
+    restart: unless-stopped
