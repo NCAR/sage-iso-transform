@@ -40,6 +40,8 @@ RUN if [ ! -d "/usr/local/wafs/dset-web-accessible-folder-dev" ]; then \
     fi
 
 # Return to home directory for supervisor startup
-cd
+RUN cd
+
+RUN supervisord --configuration /etc/supervisord.d/supervisord.conf &
 
 CMD ["/bin/bash"]
