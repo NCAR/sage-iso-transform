@@ -10,3 +10,9 @@ services:
     volumes:
       - waf_dir:/usr/local/wafs
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "supervisorctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s

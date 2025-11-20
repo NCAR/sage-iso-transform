@@ -47,5 +47,5 @@ COPY config/*.sh .
 # Return to home directory for supervisor startup
 RUN cd
 
-CMD ["supervisord", "-c", "/etc/supervisord.d/supervisord.conf"]
+CMD ["supervisord", "-n", "-c", "/etc/supervisord.d/supervisord.conf"]
 
