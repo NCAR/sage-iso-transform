@@ -9,25 +9,12 @@ COPY src ./src
 RUN mvn package spring-boot:repackage
 
 
-# Stage 2: Set up cron and supervisord
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    cron \
-    supervisor \
-    && rm -rf /var/lib/apt/lists/* \
-    && mkdir -p /etc/supervisor/conf.d
-
-COPY config/supervisord.conf /etc/supervisord.d/supervisor.conf
-COPY config/crontab /etc/cron.d/root-cron
-
-# Running cron as non-root user and give permission to ckan user
-RUN chmod gu+rw /var/run && \
-    chmod gu+s /usr/sbin/cron && \
-    crontab -u root /etc/cron.d/root-cron
-
-# Stage 3:  Copy transform scripts
-COPY config/*.sh .
-
 # Create WAF folders if necessary
+RUN if [ ! -d "/usr/local/wafs" ]; then \
+       echo "Creating WAF dir"; \
+       mkdir -p /usr/local/wafs; \
+    fi
+
 ARG PUSH_TOKEN
 RUN if [ ! -d "/usr/local/wafs/dset-web-accessible-folder-iso19115-3-dev" ]; then \
        cd /usr/local/wafs; \
@@ -39,9 +26,26 @@ RUN if [ ! -d "/usr/local/wafs/dset-web-accessible-folder-dev" ]; then \
        git clone "https://${PUSH_TOKEN}@github.com/NCAR/dset-web-accessible-folder-dev.git"; \
     fi
 
+# Stage 2: Set up cron and supervisord
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    cron \
+    supervisor \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /etc/supervisor/conf.d
+
+COPY config/supervisord.conf /etc/supervisord.d/supervisord.conf
+COPY config/crontab /etc/cron.d/root-cron
+
+# Running cron as non-root user and give permission to ckan user
+RUN chmod gu+rw /var/run && \
+    chmod gu+s /usr/sbin/cron && \
+    crontab -u root /etc/cron.d/root-cron
+
+# Stage 3:  Copy transform scripts
+COPY config/*.sh .
+
 # Return to home directory for supervisor startup
 RUN cd
 
-RUN supervisord --configuration /etc/supervisord.d/supervisord.conf &
+CMD ["supervisord", "-c", "/etc/supervisord.d/supervisord.conf"]
 
-CMD ["/bin/bash"]
