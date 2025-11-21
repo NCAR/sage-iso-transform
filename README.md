@@ -13,28 +13,13 @@ $ mvn package spring-boot:repackage
 
 Or, alternatively, you may run the following docker commands:
 ```
-docker build -t iso-transformer .
+docker compose -f docker-compose.yml build --build-arg PUSH_TOKEN=$(cat .github_token) 
 
-docker run iso-transformer sleep infinity
+docker compose -f docker-compose.yml up 
+
 ```
-Then use Docker dashboard to view the running container.   Click the container name, then click the "Exec" tab to open a terminal session within it. 
-The transformed files will be in the top level directory.   The input files are in the folder "examples".
 
-## Deployment
-
-Download the jar file from Archiva Repository using curl or wget.
-
-### Snapshots
-https://archiva.ucar.edu/repository/sage-package-snapshots/sgf/iso-transform-command-line/
-
-### Releases
-https://archiva.ucar.edu/repository/sage-package-release/sgf/iso-transform-command-line/
-
-### Example
-```
-$ curl https://archiva.ucar.edu/repository/sage-package-snapshots/sgf/iso-transform-command-line/0.0.2-SNAPSHOT/iso-transform-command-line-0.0.2-20191028.161503-1.jar --output iso-transform-command-line.jar
-```
-  
+The github token is for enabling push access to the target "old ISO" WAF.  If you don't need push access and just want to test the transform operator, you can delete the lines in Dockerfile that use this token.
   
 ## Usage
 ```
