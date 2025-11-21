@@ -75,10 +75,6 @@ else
     gitOutput=`git fetch`
     LogOperation "Git Fetch Input WAF" "$gitOutput"
 
-    # These don't work any more, maybe because "git diff" assumes the "master" branch by default.
-    #addedFiles=`git diff --name-only --diff-filter=A ..origin`
-    #modifiedFiles=`git diff --name-only --diff-filter=M ..origin`
-    #deletedFiles=`git diff --name-only --diff-filter=D ..origin`
     addedFiles=`git diff --name-only --diff-filter=A main origin/main`
     modifiedFiles=`git diff --name-only --diff-filter=M main origin/main`
     deletedFiles=`git diff --name-only --diff-filter=D main origin/main`
