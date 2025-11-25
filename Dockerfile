@@ -15,15 +15,15 @@ RUN if [ ! -d "/usr/local/wafs" ]; then \
        mkdir -p /usr/local/wafs; \
     fi
 
-ARG PUSH_TOKEN
+ARG WAF_PUSH_TOKEN
 RUN if [ ! -d "/usr/local/wafs/dset-web-accessible-folder-iso19115-3-dev" ]; then \
        cd /usr/local/wafs; \
-       git clone "https://${PUSH_TOKEN}@github.com/NCAR/dset-web-accessible-folder-iso19115-3-dev.git"; \
+       git clone "https://${WAF_PUSH_TOKEN}@github.com/NCAR/dset-web-accessible-folder-iso19115-3-dev.git"; \
     fi
 
 RUN if [ ! -d "/usr/local/wafs/dset-web-accessible-folder-dev" ]; then \
        cd /usr/local/wafs; \
-       git clone "https://${PUSH_TOKEN}@github.com/NCAR/dset-web-accessible-folder-dev.git"; \
+       git clone "https://${WAF_PUSH_TOKEN}@github.com/NCAR/dset-web-accessible-folder-dev.git"; \
     fi
 
 # Stage 2: Set up cron and supervisord
@@ -36,10 +36,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY config/supervisord.conf /etc/supervisord.d/supervisord.conf
 COPY config/crontab /etc/cron.d/root-cron
 
-# Running cron as non-root user and give permission to ckan user
-RUN chmod gu+rw /var/run && \
-    chmod gu+s /usr/sbin/cron && \
-    crontab -u root /etc/cron.d/root-cron
+# Install crontab
+RUN crontab -u root /etc/cron.d/root-cron
 
 # Stage 3:  Copy transform scripts
 COPY config/*.sh .
