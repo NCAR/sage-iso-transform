@@ -57,5 +57,5 @@ jobs:
           build-args: |
             TOKEN=${{ secrets.WAF_PUSH_TOKEN }}
           push: true
-          tags: ghcr.io/ncar/sage-dashsearch-ckan:${{ steps.date.outputs.date }}
+          tags: ghcr.io/ncar/sage-iso-transform:${{ steps.date.outputs.date }}
 
