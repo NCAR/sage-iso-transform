@@ -1,3 +1,9 @@
+#/bin/sh
+
+set -x
+
+WAF_PUSH_TOKEN=`cat /run/secrets/waf_push_token`
+echo $WAF_PUSH_TOKEN
 
 # Create WAF folders if necessary
 if [ ! -d "/usr/local/wafs" ]; then
