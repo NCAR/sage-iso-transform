@@ -22,11 +22,8 @@ COPY config/crontab /etc/cron.d/root-cron
 RUN crontab -u root /etc/cron.d/root-cron
 
 # Stage 3:  Copy config and transform scripts
-COPY config/setup_wafs.sh .
+COPY config/run_app.sh .
 COPY config/check_git.sh .
 COPY config/run_transformer.sh .
 
-# Create WAFs if necessary
-RUN ./setup_wafs.sh
-
-CMD ["supervisord", "-n", "-c", "/etc/supervisord.d/supervisord.conf"]
+CMD ["./run_app.sh"]

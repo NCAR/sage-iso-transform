@@ -2,8 +2,9 @@
 
 set -x
 
-WAF_PUSH_TOKEN=`cat /run/secrets/waf_push_token`
-echo $WAF_PUSH_TOKEN
+if [ -z "${WAF_PUSH_TOKEN}" ]; then
+  WAF_PUSH_TOKEN=`cat /run/secrets/waf_push_token`
+fi
 
 # Create WAF folders if necessary
 if [ ! -d "/usr/local/wafs" ]; then
@@ -21,3 +22,7 @@ if [ ! -d "/usr/local/wafs/dset-web-accessible-folder-dev" ]; then \
      cd /usr/local/wafs
      git clone "https://${WAF_PUSH_TOKEN}@github.com/NCAR/dset-web-accessible-folder-dev.git"
 fi
+
+
+# This should run in the foreground to keep the container alive
+supervisord -n -c /etc/supervisord.d/supervisord.conf
