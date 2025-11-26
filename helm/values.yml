@@ -1,0 +1,8 @@
+webapp:
+  name: iso-transform
+  tls:
+    fqdn: iso-transform.data-commons.k8s.ucar.edu
+    secretName: incommon-cert-sage-ckandev
+  images:
+    transform: ghcr.io/ncar/sage-iso-transform
+  tag: 2025-11-12.20.34
