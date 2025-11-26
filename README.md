@@ -10,20 +10,18 @@ To create the .jar file run the following maven command:
 ```
 $ mvn package spring-boot:repackage
 ```
+The jar file should appear in a local subdirectory within the Docker container called "target".
+
 
 Or, alternatively, you may run the following docker commands:
 ```
-docker build -t iso-transformer .
+docker compose -f docker-compose.yml build 
 
-docker run iso-transformer sleep infinity
+docker compose -f docker-compose.yml up 
+
 ```
-Then use Docker dashboard to view the running container.   Click the container name, then click the "Exec" tab to open a terminal session within it. 
-The transformed files will be in the top level directory.   The input files are in the folder "examples".
 
-## Deployment
-
-The jar file should appear in a local subdirectory within the Docker container called "target".
-
+The github token is for enabling push access to the target "old ISO" WAF.  If you don't need push access and just want to test the transform operator, you can delete the lines in Dockerfile that use this token.
   
 ## Usage
 ```

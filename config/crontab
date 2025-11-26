@@ -1,0 +1,7 @@
+# m h dom mon dow command
+
+# Run translator every 8 hours, to guarantee long-running jobs are finished
+20 */8 * * *    /app/run_transformer.sh >> /var/log/cron.log 2>&1
+
+# cron heartbeat
+*/5 * * * *    /usr/bin/touch /app/cron-heartbeat

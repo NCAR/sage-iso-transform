@@ -8,11 +8,22 @@ COPY src ./src
 
 RUN mvn package spring-boot:repackage
 
+# Stage 2: Set up cron and supervisord
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    cron \
+    supervisor \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /etc/supervisor/conf.d
 
-# Stage 2: Run the application on some examples
+COPY config/supervisord.conf /etc/supervisord.d/supervisord.conf
+COPY config/crontab /etc/cron.d/root-cron
 
-COPY *.sh .
-COPY examples ./examples
-RUN ./run_examples.sh
+# Install crontab
+RUN crontab -u root /etc/cron.d/root-cron
 
-CMD ["/bin/bash"]
+# Stage 3:  Copy config and transform scripts
+COPY config/run_app.sh .
+COPY config/check_git.sh .
+COPY config/run_transformer.sh .
+
+CMD ["./run_app.sh"]
