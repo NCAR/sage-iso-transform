@@ -15,7 +15,7 @@ The jar file should appear in a local subdirectory within the Docker container c
 
 Or, alternatively, you may run the following docker commands:
 ```
-docker compose -f docker-compose.yml build --build-arg PUSH_TOKEN=$(cat .github_token) 
+docker compose -f docker-compose.yml build 
 
 docker compose -f docker-compose.yml up 
 
