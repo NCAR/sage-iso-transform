@@ -6,9 +6,11 @@ set -x
 #
 # Constants that may require admin configuration
 #
-BASE_DIR='/usr/local/wafs'
-INPUT_WAF="$BASE_DIR/dset-web-accessible-folder-iso19115-3-dev"
-OUTPUT_WAF="$BASE_DIR/dset-web-accessible-folder-dev"
+#BASE_DIR='/usr/local/wafs'
+#INPUT_WAF="$BASE_DIR/dset-web-accessible-folder-iso19115-3-dev"
+#OUTPUT_WAF="$BASE_DIR/dset-web-accessible-folder-dev"
+INPUT_WAF=$1
+OUTPUT_WAF=$2
 
 APP_DIR='/app'
 JAVA='/opt/java/openjdk/bin/java'

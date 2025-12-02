@@ -1,7 +1,10 @@
 # m h dom mon dow command
 
-# Run translator every hour at 20 past the hour
-20 */1 * * *    /app/run_transformer.sh >> /var/log/cron.log 2>&1
+# Run DEV translator every hour at 20 past the hour
+20 */1 * * *    /app/run_transformer.sh /usr/local/wafs/dset-web-accessible-folder-iso19115-3-dev  /usr/local/wafs/dset-web-accessible-folder-dev  >> /var/log/cron.log 2>&1
+
+# For debugging: run every minute
+#*/1 * * * *    /app/run_transformer.sh /usr/local/wafs/dset-web-accessible-folder-iso19115-3-dev  /usr/local/wafs/dset-web-accessible-folder-dev  >> /var/log/cron.log 2>&1
 
 
 # cron heartbeat
