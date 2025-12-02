@@ -23,6 +23,8 @@ if [ ! -d "/usr/local/wafs/dset-web-accessible-folder-dev" ]; then \
      git clone "https://${WAF_PUSH_TOKEN}@github.com/NCAR/dset-web-accessible-folder-dev.git"
 fi
 
+# Return to working directory to start supervisor
+cd /app
 
 # This should run in the foreground to keep the container alive
 supervisord -n -c /etc/supervisord.d/supervisord.conf

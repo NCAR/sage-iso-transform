@@ -1,8 +1,8 @@
 # m h dom mon dow command
 
 # Run translator every hour at 20 past the hour
-#20 */1 * * *    /app/run_transformer.sh >> /var/log/cron.log 2>&1
-*/1 * * * *    /app/run_transformer.sh >> /var/log/cron.log 2>&1
+20 */1 * * *    /app/run_transformer.sh >> /var/log/cron.log 2>&1
+
 
 # cron heartbeat
 */5 * * * *    /usr/bin/touch /app/cron-heartbeat
