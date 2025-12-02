@@ -23,7 +23,7 @@ spec:
         io.kompose.service: transform
     spec:
       containers:
-        - image: "{{ .Values.webapp.images.ckan }}:{{ .Values.webapp.tag }}"
+        - image: "{{ .Values.webapp.images.transform }}:{{ .Values.webapp.tag }}"
           livenessProbe:
             exec:
               command:
