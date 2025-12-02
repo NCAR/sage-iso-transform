@@ -26,5 +26,10 @@ fi
 # Return to working directory to start supervisor
 cd /app
 
+# Git won't push changes without a username and email set.
+git config --global user.email "bonnland@ucar.edu"
+git config --global user.name "sage-bonnland"
+
+
 # This should run in the foreground to keep the container alive
 supervisord -n -c /etc/supervisord.d/supervisord.conf
