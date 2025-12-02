@@ -36,9 +36,9 @@ spec:
           name: transform
           volumeMounts:
             - mountPath: /usr/local/wafs
-              name: waf-dir
+              name: transform-waf-dir
       restartPolicy: Always
       volumes:
-        - name: waf-dir
+        - name: transform-waf-dir
           persistentVolumeClaim:
-            claimName: waf-dir
+            claimName: transform-waf-dir

@@ -2,8 +2,8 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    io.kompose.service: waf-dir
-  name: waf-dir
+    io.kompose.service: transform-waf-dir
+  name: transform-waf-dir
 spec:
   accessModes:
     - ReadWriteOnce
