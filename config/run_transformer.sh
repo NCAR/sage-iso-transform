@@ -11,6 +11,7 @@ INPUT_WAF="$BASE_DIR/dset-web-accessible-folder-iso19115-3-dev"
 OUTPUT_WAF="$BASE_DIR/dset-web-accessible-folder-dev"
 
 APP_DIR='/app'
+JAVA='/opt/java/openjdk/bin/java'
 TRANSFORM_JAR_PATH=`ls $APP_DIR/target/*.jar`
 LOG_FILE="$APP_DIR/transformer.log"
 
@@ -38,7 +39,7 @@ function LogOperation {
 function PerformTransforms {
    local operation="$1"
    local files="$2"
-   local TRANSFORM_BASE="java -jar $TRANSFORM_JAR_PATH"
+   local TRANSFORM_BASE="$JAVA -jar $TRANSFORM_JAR_PATH"
    local tranformOutput
 
    # Transform all files
