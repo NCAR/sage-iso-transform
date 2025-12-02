@@ -37,6 +37,12 @@ spec:
           volumeMounts:
             - mountPath: /usr/local/wafs
               name: transform-waf-dir
+          env:
+            - name: WAF_PUSH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: secrets-transform
+                  key: WAF_PUSH_TOKEN
       restartPolicy: Always
       volumes:
         - name: transform-waf-dir
