@@ -5,4 +5,4 @@ webapp:
     secretName: incommon-cert-sage-ckandev
   images:
     transform: ghcr.io/ncar/sage-iso-transform
-  tag: 2025-12-02.01.07
+  tag: 2025-12-02.17.15
