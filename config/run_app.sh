@@ -37,7 +37,7 @@ fi
 # Return to working directory to start supervisor
 cd /app
 
-# Git won't push changes without a username and email set.
+# Git won't commit changes without a username and email set.
 git config --global user.email "bonnland@ucar.edu"
 git config --global user.name "sage-bonnland"
 

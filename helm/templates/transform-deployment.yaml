@@ -43,6 +43,8 @@ spec:
                 secretKeyRef:
                   name: secrets-transform
                   key: WAF_PUSH_TOKEN
+            - name: TZ
+              value: "America/Denver"
       restartPolicy: Always
       volumes:
         - name: transform-waf-dir
