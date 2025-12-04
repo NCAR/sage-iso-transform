@@ -1,21 +1,19 @@
 #!/bin/bash
 
 # Uncomment to debug this script
-set -x
+#set -x
+
+INPUT_WAF=$1
+OUTPUT_WAF=$2
+DEV_OR_PROD=$3
 
 #
 # Constants that may require admin configuration
 #
-#BASE_DIR='/usr/local/wafs'
-#INPUT_WAF="$BASE_DIR/dset-web-accessible-folder-iso19115-3-dev"
-#OUTPUT_WAF="$BASE_DIR/dset-web-accessible-folder-dev"
-INPUT_WAF=$1
-OUTPUT_WAF=$2
-
 APP_DIR='/app'
 JAVA='/opt/java/openjdk/bin/java'
 TRANSFORM_JAR_PATH=`ls $APP_DIR/target/*.jar`
-LOG_FILE="$APP_DIR/transformer.log"
+LOG_FILE="$APP_DIR/transformer_${DEV_OR_PROD}.log"
 
 WAF_STATUS_COMMAND="$APP_DIR/check_git.sh"
 
